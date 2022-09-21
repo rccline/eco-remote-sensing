@@ -3,6 +3,34 @@
 # raster package to manage image data
 # https://cran.r-project.org/web/packages/raster/index.html
 
+
+##%######################################################%##
+#                                                          #
+####          spectral vegetation index (NIR −          ####
+####                    SWIR)/(NIR +                    ####
+####                       SWIR)                        ####
+####     https://www.tandfonline.com/doi/abs/10.10      ####
+####     80/01431161.2010.510811?journalCode=tres20     ####
+####                        The                         ####
+####         spectral vegetation index (ρNIR −          ####
+####         ρSWIR)/(ρNIR + ρSWIR),  where ρNIR         ####
+####          and ρSWIR are the near-infrared           ####
+#### (NIR) and  shortwave-infrared (SWIR) reflectances, ####
+####           respectively,  has been widely           ####
+####  used to indicate vegetation moisture condition.   ####
+#                                                          #
+##%######################################################%##
+
+#b1 = blue
+#b2 = green
+#b3 = red 
+#b4 = nir
+#b5 = swir 
+#b6 = thermal ir  (resolution is 60 m)
+#b7 = swir.  
+
+
+
 ### Directory 
 ### l1988 <- brick(here("lab/data_book/raster_data/final/p224r63_1988.grd"))
 ### l1988
@@ -53,6 +81,14 @@ plot(l2011)
 # B2 is the reflectance in the green band
 # B3 is the reflectance in the red band
 
+
+# change the color for all of the bands -----------------------------------
+
+l2011$B1_sre
+l2011[[1]]
+
+ 
+
 cl <- colorRampPalette(c("black","grey","light grey"))(100)
 plot(l2011, col=cl)
 
@@ -87,6 +123,13 @@ plot(l2011$B2_sre, col=clg)
 clb <- colorRampPalette(c("dark blue","blue","light blue"))(100)
 plot(l2011$B1_sre, col=clb)
 
+
+par(mfrow = c(2,2)) 
+plot(l2011[[1]], col=cl)
+plot(l2011[[2]], col=cl)
+plot(l2011[[3]], col=cl)
+plot(l2011[[4]], col=cl)
+
 # plot both images in just one multiframe graph
 par(mfrow=c(1,2)) # the first number is the number of rows in the multiframe, while the second one is the mnumber of columns
 plot(l2011$B1_sre, col=clb)
@@ -98,9 +141,33 @@ plot(l2011$B1_sre, col=clb)
 plot(l2011$B2_sre, col=clg)
 
 
+### dev.off() to remove the multiframe  
+
 #--- day 3  Multiplots and patchwork library  ###  
 
 plot(l2011$B1_sre)
+
+
+
+# Create true color image  RGB --------------------------------------------  
+## b3 = red, b1 = blue, b3 = greeen  
+## pubt band number 1 in the blue
+## band number 2 in the green shannel
+## band number 3 in the red channel  
+
+## Identify the bands Use Linear stretching  
+plotRGB(l2011, r=3, g=2, b=1, stretch = "Lin")  ##NATURAL colORS  
+## natural color image.  Strecthed to take the min and max value from 0 reference
+## to 255.   All the values are stretched between 0 and 255
+
+
+
+#EE Stretching:  
+## Notr all of the potential values are in the bands 
+## We stretch it by 
+
+
+
 
 # plot the blue band using a blue colorRampPalette
 clb <- colorRampPalette(c("dark blue","blue","light blue"))(100)
@@ -170,13 +237,21 @@ plotRGB(l2011, r=4, g=3, b=2, stretch="Lin")  # false colours
 plotRGB(l2011, r=3, g=4, b=2, stretch="Lin")  # false colours
 plotRGB(l2011, r=3, g=2, b=4, stretch="Lin")  # false colours
 
+
+
+# Change the reflective values in different RGB channels **** -------------
+
+
 par(mfrow=c(2,2))
 plotRGB(l2011, r=3, g=2, b=1, stretch="Lin")  # natural colours
-plotRGB(l2011, r=4, g=3, b=2, stretch="Lin")  # false colours
-plotRGB(l2011, r=3, g=4, b=2, stretch="Lin")  # false colours
-plotRGB(l2011, r=3, g=2, b=4, stretch="Lin")  # false colours
+plotRGB(l2011, r=4, g=3, b=2, stretch="Lin")  # false colours - NIR in red channel 
+plotRGB(l2011, r=3, g=4, b=2, stretch="Lin")  # false colours - NIR in the green channel 
+plotRGB(l2011, r=3, g=2, b=4, stretch="Lin")  # false colours - NIR in the blue channel to show bare soil (yellow catches the eye)
   
 # final day on this tropical forest reserve
+
+# Histogram stretching ----------------------------------------------------
+## Using NIR and Histogram streching, you can see what the eye cannot see.  
 
 plotRGB(l2011, r=4, g=3, b=2, stretch="Lin")  
 plotRGB(l2011, r=4, g=3, b=2, stretch="Hist") ### Histogram 
@@ -208,10 +283,12 @@ plotRGB(l2011, r=2, g=3, b=4, stretch="Lin")
   
   
   
+  ### Spectral species concept in living color (2022, Aug 13 \ https://doi.org/10.1029/2022jg007026)
   
-  
-  
-  
+  # https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2022JG007026  
+# The Spectral Species Concept in Living Color
+# Duccio Rocchini,Maria J. Santos,Susan L. Ustin,Jean-Baptiste Féret,
+#Gregory P. Asner,Carl Beierkuhnlein,Michele Dalponte,Hannes Feilhauer,Giles M. Foody … See all authors 
   
   
   
