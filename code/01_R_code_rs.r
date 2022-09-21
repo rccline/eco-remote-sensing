@@ -3,6 +3,13 @@
 # raster package to manage image data
 # https://cran.r-project.org/web/packages/raster/index.html
 
+### Directory 
+### l1988 <- brick(here("lab/data_book/raster_data/final/p224r63_1988.grd"))
+### l1988
+
+
+
+
 # install.packages("raster")
 library(here)
 library(raster)
@@ -27,7 +34,7 @@ l2011 <- brick(here("lab/data_book/raster_data/final/p224r63_2011.grd"))
 l2011
 summary(l2011)
 
-
+plot(l2011)
 # Trivia ------------------------------------------------------------------
 
 
@@ -48,6 +55,13 @@ summary(l2011)
 
 cl <- colorRampPalette(c("black","grey","light grey"))(100)
 plot(l2011, col=cl)
+
+# Plot a single band  ----------------------
+plot(l2011$B1_sre)
+
+plot(l2011$B1_sre, col=cl)
+
+plot(l2011[[1]], col=cl)
 
 plotRGB(l2011, r=3, g=2, b=1, stretch="Lin")
 
@@ -84,7 +98,7 @@ plot(l2011$B1_sre, col=clb)
 plot(l2011$B2_sre, col=clg)
 
 
-#--- day 3
+#--- day 3  Multiplots and patchwork library  ###  
 
 plot(l2011$B1_sre)
 
@@ -128,9 +142,29 @@ plot(l2011$B3_sre, col=clr)
   
 clnir <- colorRampPalette(c("red","orange","yellow"))(100)
 plot(l2011$B4_sre, col= clnir)
+
+
+# plot from class ---------------------------------------------------------
+
+
+par(mfrow=c(2,2)) 
+plot(l2022[[1]], col=cl)
+plot(l2022[[2]], col=cl)
+plot(l2022[[3]], col=cl)
+plot(l2022[[4]], col=cl)
   
 # dev.off()
- 
+## Produces error:  
+### Error in dev.off() : cannot shut down device 1 (the null device)
+
+#### NIR is the most important band #### 
+#### PUT THE RED IN THE RED CHANNEL  
+
+# tHE sPECTRAL SPECIES CONCEPT IN LIVING COLOR = ARTICLE -----------------
+# sEPT 2022 
+
+## Looking at images from a different perspective using stretch="Lin"
+
 plotRGB(l2011, r=3, g=2, b=1, stretch="Lin")  # natural colours
 plotRGB(l2011, r=4, g=3, b=2, stretch="Lin")  # false colours
 plotRGB(l2011, r=3, g=4, b=2, stretch="Lin")  # false colours
@@ -145,16 +179,26 @@ plotRGB(l2011, r=3, g=2, b=4, stretch="Lin")  # false colours
 # final day on this tropical forest reserve
 
 plotRGB(l2011, r=4, g=3, b=2, stretch="Lin")  
-plotRGB(l2011, r=4, g=3, b=2, stretch="Hist") 
-  
+plotRGB(l2011, r=4, g=3, b=2, stretch="Hist") ### Histogram 
+
+### Use NIR to see parts of the spectrum that is not visible to human eye
+
+
+  library(here)
 # Importing past data
 setwd("~/lab/") # in case you are on a new R session
-l1988 <- brick("p224r63_1988.grd")  
+l1988 <- brick(here("lab/data_book/raster_data/final/p224r63_1988.grd"))
 l1988
   
-par(mfrow=c(2,1))
+# 4 = NIR
+# 3 = red 
+# 2 = green  
+par(mfrow=c(2,2))
 plotRGB(l1988, r=4, g=3, b=2, stretch="Lin")  
 plotRGB(l2011, r=4, g=3, b=2, stretch="Lin")  
+plotRGB(l1988, r=4, g=3, b=2, stretch="Hist")  
+plotRGB(l2011, r=4, g=3, b=2, stretch="Hist")  
+
 
 # Put the NIR in the blue channel
 plotRGB(l1988, r=2, g=3, b=4, stretch="Lin")  
