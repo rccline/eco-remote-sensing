@@ -25,15 +25,24 @@ lab/data_book
   
   # RStudio files
 .Rproj.user/
-.Rproj
+*.Rproj
 
 # Exclude data from:  
 
-  
+*.zip
+*.url 
+USGS-Password.txt
+01_R_code_rs.txt
+
 /physalia_ecol_rs_2022  
 /presentations  
+/references
+/urls
 /vds
 /scripts
+/lab
+/img
+
 
 # produced vignettes
 vignettes/*.html
