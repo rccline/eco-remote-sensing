@@ -1,14 +1,16 @@
-# l1988 <- brick(here("lab/data_book/raster_data/final/p224r63_1988.grd"))
 
-myoldpath <- here("lab/data_book/raster_data/final/")
-mypath <-  here("physalia_ecol_rs_2022/data/defor1_.jpg")
+
 library(here)
+here()
 library(raster)
-# install.packages("rgdal")
-# install.packages("RStoolbox")
-# install.packages("rasterdiv")
-# library(rgdal)
+## Remote Sensing Toolbox  
 library(RStoolbox)
+
+
+library(rgdal)
+library(rasterdiv)
+
+
 # library(rasterdiv)
 
 # setwd("~/lab/") # Linux
@@ -17,14 +19,37 @@ library(RStoolbox)
 
 # Exercise: import the first file -> defor1_.jpg -> give it the name l1992
 
-l1992 <- brick(here("physalia_ecol_rs_2022/data/defor1_.jpg"))
+l1992 <- brick(here("lab/data/defor1.jpg"))
+l2006 <- brick(here("lab/data/defor2.jpg"))  
+
+## This image has only 3 bands and they are:   
+
+# layer1 = nir (Red channel of RGB) ~ for sure  
+# layer2 = red
+# layer3 = green 
+
 
 plotRGB(l1992, r=1, g=2, b=3, stretch="lin")
 
-## This image has only 3 bands and they are:                    
-# layer 1 = NIR  FOR SURE  
-# layer 2 = red
-# layer 3 = green
+                 
+
+# RStoolbox::spectralIndices ---------------------------------------------------------
+
+## spectralIndices Documentation https://www.rdocumentation.org/packages/RStoolbox/versions/0.3.0/topics/spectralIndices 
+
+## Indices  differences/sum  
+## If I want to calculate the vegetation biomass without considering the impact of 
+##the soil, I can remove the soil:  
+
+## MSAV & MSAV2 
+
+### Example:  In a wetland, REMOVE The effect of water.  
+
+### Import the data from the lab folder defor1.jpg = 1992  & defor2.jpg = 2006
+
+
+
+
 
 
 # Exercise: import the second file -> defor2_.jpg -> give it the name l2006
@@ -120,12 +145,20 @@ plot(si1992,col=cl)
 
 si2006 <- spectralIndices(l2006, green=3, red=2, nir=1)
 plot(si2006,col=cl)
-git 
+ 
 ### rasterdiv
 # plot(copNDVI)
 
 ### End of Day 2 #### 
+cl <- colorRampPalette(c('darkblue','yellow','red','black'))(100) # specifying a color scheme
 
+
+si2006 <- spectralIndices(l2006, green=3, red = 2, nir=1)
+
+pairs(si2006)
+
+
+# Multitemporal analysis of remote sensing data:  greenland ice me --------
 
 
 
